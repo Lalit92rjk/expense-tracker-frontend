@@ -124,6 +124,7 @@ async function toPremium(e) {
          })
      },
   };
+  
   const rzp1 = new Razorpay(options);
   rzp1.open();
   e.preventDefault();
@@ -138,4 +139,7 @@ async function toPremium(e) {
   alert(response.error.metadata.payment_id);
  });
 }
+
+
+
 
