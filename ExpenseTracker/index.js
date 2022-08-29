@@ -69,9 +69,33 @@ function removeExpensefromUI(expenseid){
     document.getElementById(expenseElemId).remove();
 }
 
+function download()
+{
+    const userDetails_JSON= localStorage.getItem('user');
+    const user= JSON.parse(userDetails_JSON);
+    if(user.isPremium===true)
+    {
+        axios.get('https://localhost:3000/download', {headers: {"Authorization": token}})
+        .then((response) => {
+            if(response.status===201)
+            {
+                var a= document.createElement("a");
+                a.href= response.data.fileUrl;
+                a.download= 'myexpense.csv';
+                a.click();
+            }
+            else 
+            {
+                throw new Error(response.data.message);
+            }
+        })
+        .catch((err) => {
+            console.log(err.response);
+        });
+    }
+}
 
-
-document.getElementById('rzp-button1').onclick = async function (e) {
+async function toPremium(e) {
     const response  = await axios.get('http://localhost:3000/purchase/premiummembership', { headers: {"Authorization" : token} });
     console.log(response);
     var options =
@@ -114,3 +138,4 @@ document.getElementById('rzp-button1').onclick = async function (e) {
   alert(response.error.metadata.payment_id);
  });
 }
+
